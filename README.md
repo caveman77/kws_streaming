@@ -6,9 +6,6 @@ This clone is not the latest and is close to the 2020 release. Few modifications
 
 This is based on Python 3.7 and TF 2.4
 
-The main packages with pip freeze are:
-graphviz==0.20.1
-tensorflow-addons==0.23.0
-tf-nightly==2.16.0.dev20240203
+requirements.txt file is the one used to get the packages. The one in the subfolder is the original one and is to be ignored.
 
 
