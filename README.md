@@ -5,10 +5,10 @@ This is based on google research repository that can be find here : https://gith
 This clone is not the latest and is close to the 2020 release. Few modifications have been done afterward.
 
 Here the pacakage releases required:
-absl-py==1.4.0
-apturl==0.5.2
-astunparse==1.6.3
-bcrypt==3.2.0
+* absl-py==1.4.0
+* apturl==0.5.2
+* astunparse==1.6.3
+* bcrypt==3.2.0
 blinker==1.4
 Brlapi==0.8.3
 cachetools==5.3.2
