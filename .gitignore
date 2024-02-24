@@ -135,4 +135,6 @@ dmypy.json
 # Model not zipped
 models/
 models_30k/
+models2_30k/
+models3_30k/
 data2/
