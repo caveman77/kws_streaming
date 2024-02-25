@@ -133,7 +133,7 @@ dmypy.json
 .vscode
 
 # Model not zipped
-models/
+models_/
 models_30k/
 models2_30k/
 models3_30k/
