@@ -130,7 +130,7 @@ print('23-2:', index_to_label[str(23)])
 
 
 #interpreter = tf.lite.Interpreter(model_path,num_threads=20)
-interpreter = Interpreter(model_path,num_threads=20)
+interpreter = Interpreter(model_path,num_threads=1)
 interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
