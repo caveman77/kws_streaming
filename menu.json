@@ -1,59 +1,67 @@
 {
-    "kw" : "marvin",
     "submenu":
     [
         {
-            "kw" : "visual",
+            "kw" : "sheila",
             "submenu":
             [
                 {
-                    "kw":"on",
-                    "text":"launching kodi"
-                },
-                {
-                    "kw":"off",
-                    "text":"stoping kodi"
-                }
-            ]
-        },
-        {
-            "kw" : "house",
-            "submenu":
-            [
-                {
-                    "kw":"one",
+                    "kw" : "visual",
                     "submenu":
                     [
                         {
-                            "kw":"up",
-                            "text":"roller shutter one up"
+                            "kw":"on",
+                            "text":"launching kodi"
                         },
                         {
-                            "kw":"down",
-                            "text":"roller shutter one down"
+                            "kw":"off",
+                            "text":"stoping kodi"
                         }
-
                     ]
                 },
                 {
-                    "kw":"two",
+                    "kw" : "house",
+                    "proba":0.6,
                     "submenu":
                     [
                         {
-                            "kw":"up",
-                            "text":"roller shutter two up"
+                            "kw":"one",
+                            "submenu":
+                            [
+                                {
+                                    "kw":"up",
+                                    "proba":0.5,
+                                    "text":"roller shutter one up"
+                                },
+                                {
+                                    "kw":"down",
+                                    "text":"roller shutter one down"
+                                }
+
+                            ]
                         },
                         {
-                            "kw":"down",
-                            "text":"roller shutter two down"
-                        }
+                            "kw":"two",
+                            "proba":0.7,
+                            "submenu":
+                            [
+                                {
+                                    "kw":"up",
+                                    "proba":0.5,
+                                    "text":"roller shutter two up"
+                                },
+                                {
+                                    "kw":"down",
+                                    "text":"roller shutter two down"
+                                }
 
+                            ]
+                        }
                     ]
                 }
+
+
             ]
         }
-
-
     ]
-
 }

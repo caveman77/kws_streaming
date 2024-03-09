@@ -32,19 +32,22 @@ model_path = 'models3_30k/svdf/tflite_stream_state_external/stream_state_externa
 
 
 def get_menufilter():
-    global index_to_label, currentmenu, menufilter
+    global index_to_label, currentmenu, menufilter, rootprompt
 
     menufilter = np.zeros(len(index_to_label), dtype=np.float32)
-    menufilter[int(label_to_index[rootmenu['kw']])] = 1
+    menufilter[int(label_to_index[rootprompt])] = 1
+
     for i in currentmenu['submenu']:
         menufilter[int(label_to_index[i['kw']])] = 1
+
+    #print('menufilter',menufilter)
     return menufilter
 
 
 def sd_callback(rec, frames, time, status):   
     
     #global sumseconds, sumrecords
-    global predict, probat, index_to_label, currentmenu, menufilter
+    global predict, probat, index_to_label, currentmenu, menufilter, rootprompt, rootmenu
 
 
     # audio rec shape is : (frames, channels)
@@ -75,39 +78,60 @@ def sd_callback(rec, frames, time, status):
     probas = softmax(out_tflite)
 
     proba = np.max(probas)
-    #if (proba > word_threshold):
-    #    out_tflite_argmax = np.argmax(out_tflite)
-    #    if out_tflite_argmax > 1:
-    #        label_found = index_to_label[str(out_tflite_argmax)]
-    #        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"), label_found, proba)
-
-    # set to zero all probability on not expected key words
-    out_tflitefiltered = out_tflite * menufilter
-    probas_filtered = probas * menufilter
-
-    out_tflite_argmax_filtered = np.argmax(out_tflitefiltered)
+    index = np.argmax(probas)
 
     
-    proba_filtered = np.max(probas_filtered)
-    if (proba_filtered > word_threshold):
-        label_found = index_to_label[str(out_tflite_argmax_filtered)]
-        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S ===="), label_found, proba)
+    if index>1:
+        # set to zero all probability on not expected key words
+        probas_filtered = probas * menufilter
+
         
+        out_tflite_argmax_filtered = np.argmax(probas_filtered)
+
+        
+        proba_filtered = np.max(probas_filtered)
+        proba_min = word_threshold
+
+        
+        
+        label_found = index_to_label[str(out_tflite_argmax_filtered)]
+        #print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"), out_tflite_argmax_filtered, index, label_found, proba_filtered, proba)
+        
+
         # moving in menu
-        if rootmenu['kw'] == label_found:
-           currentmenu = rootmenu
+        if rootprompt == label_found:
+            foundmenu = rootmenu["submenu"][0]
+
+            if foundmenu.get('proba') is not None:
+                proba_min = foundmenu['proba']
+
+            if proba_filtered > proba_min:
+                currentmenu = foundmenu
+                print(datetime.now().strftime("%d/%m/%Y %H:%M:%S =="), label_found, proba)
+                menufilter = get_menufilter()
         else:
             for submenu in currentmenu["submenu"]:
-                if submenu['kw'] == label_found:
-                    foundmenu = submenu
+                #if submenu['kw'] == label_found:
+                foundmenu = submenu
+                indice = int(label_to_index[submenu['kw']])
+                curproba = probas[0][indice]
+
+                if foundmenu.get('proba') is not None:
+                    proba_min = foundmenu['proba']
+                    print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"), submenu['kw'], curproba)
+                
+                if  curproba > proba_min:    
+                    currentmenu = foundmenu
+
+                    if currentmenu.get("submenu") is None:
+                        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S ==== ACTION"), submenu['kw'], curproba, currentmenu['text'])
+                        currentmenu = rootmenu
+                    else:
+                        print(datetime.now().strftime("%d/%m/%Y %H:%M:%S =="), submenu['kw'], curproba)
+
+                    menufilter = get_menufilter()
                     break
-            currentmenu = foundmenu
-
-            if currentmenu.get("submenu") is None:
-                print(datetime.now().strftime("%d/%m/%Y %H:%M:%S ==== ACTION"), label_found, proba)
-                currentmenu = rootmenu
-
-        menufilter = get_menufilter()
+    
 
 
 
@@ -150,7 +174,13 @@ with open(os.path.join(current_dir, 'menu.json'), 'r') as fd3:
    rootmenu = json.load(fd3)
 
 currentmenu = rootmenu
+rootprompt = rootmenu['submenu'][0]['kw']
+print('rootprompt', rootprompt)
+
+
 menufilter = get_menufilter()
+
+
 
 
 #interpreter = tf.lite.Interpreter(model_path,num_threads=20)
