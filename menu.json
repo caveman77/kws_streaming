@@ -1,0 +1,59 @@
+{
+    "kw" : "marvin",
+    "submenu":
+    [
+        {
+            "kw" : "visual",
+            "submenu":
+            [
+                {
+                    "kw":"on",
+                    "text":"launching kodi"
+                },
+                {
+                    "kw":"off",
+                    "text":"stoping kodi"
+                }
+            ]
+        },
+        {
+            "kw" : "house",
+            "submenu":
+            [
+                {
+                    "kw":"one",
+                    "submenu":
+                    [
+                        {
+                            "kw":"up",
+                            "text":"roller shutter one up"
+                        },
+                        {
+                            "kw":"down",
+                            "text":"roller shutter one down"
+                        }
+
+                    ]
+                },
+                {
+                    "kw":"two",
+                    "submenu":
+                    [
+                        {
+                            "kw":"up",
+                            "text":"roller shutter two up"
+                        },
+                        {
+                            "kw":"down",
+                            "text":"roller shutter two down"
+                        }
+
+                    ]
+                }
+            ]
+        }
+
+
+    ]
+
+}
